@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Errors</title>
+    <style>
+      body {
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+      .btn {
+        color: red;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>下面的demo演示web中可能出现的错误</h1>
+    <p class="btn error-syntax">语法错误 写的js不能执行</p>
+    <p class="btn error-type">类型错误 没有相关方法</p>
+    <p class="btn error-range">范围错误 比如数组</p>
+    <p class="btn err-runtime">引用错误 ReferenceError</p>
+    <p class="btn err-eval">eval 错误 这里有复杂的历史 忽略</p>
+    <p class="btn error-uri">调用uri转换时候出错</p>
+    <hr />
+    <p class="btn err-resouce">
+      资源加载错误 img style script video 等 <span class="img"></span>
+    </p>
+    <hr />
+    <p class="btn err-console">console.err</p>
+    <hr />
+    <p class="btn err-promise">异步错误 promise</p>
+
+    <script>
+      var $ = (s) => document.querySelector(s);
+      var myClick = (selector, fn) => {
+        document.querySelector(selector).addEventListener("click", fn, false);
+      };
+
+      $(".error-syntax").addEventListener("click", () => {
+        //   var a =
+      });
+
+      myClick(".err-runtime", () => (a = a + b));
+
+      myClick(".err-resouce", () => {
+        $(".err-resouce .img").innerHTML = '<img src="./b.jpg" alt="" />';
+      });
+      myClick(".err-console", () => {
+        console.error("自定义的错误");
+      });
+      myClick(".error-type", () => {
+        "a".push(2);
+      });
+      myClick(".error-range", () => {
+        new Array(-1);
+      });
+      myClick(".error-uri", () => {
+        decodeURIComponent("%");
+      });
+      myClick(".err-promise", () => {
+        new Promise((res, rej) => {
+          rej("hi");
+        });
+      });
+    </script>
+    <script>
+      //   window.onerror = (e) => {
+      //     console.log("收到错误，要处理" + e);
+      //   };
+      //   window.addEventListener(
+      //     "error",
+      //     (e) => {
+      //       console.log("收到错误");
+      //       console.log(e);
+      //     },
+      //     true
+      //   );
+      //   console.error = (function (old) {
+      //     return function (info) {
+      //       console.log("收到错误");
+      //       old.call(console, info);
+      //     };
+      //   })(console.error);
+
+      window.addEventListener("unhandledrejection", (e) => {
+        console.log("收到");
+      });
+    </script>
+  </body>
+</html>
