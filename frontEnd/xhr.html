@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>xhr</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.20.0/axios.min.js"></script>
+  </head>
+  <body>
+    <script>
+      window.onload = function () {
+        //   正常
+        // axios.get("//localhost:3000/info").then(console.log);
+
+        // 跨域
+        axios.get("//localhost:3000/info2").then(console.log);
+        // axios.get("//localhost:3000/info").then(console.log);
+        // axios.get("//localhost:3000/info").then(console.log);
+
+        window.addEventListener("unhandledrejection", (e) => {
+          console.log("捕获");
+        });
+      };
+    </script>
+  </body>
+</html>
