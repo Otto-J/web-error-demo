@@ -8,19 +8,55 @@
   </head>
   <body>
     <script>
-      window.onload = function () {
-        //   正常
-        // axios.get("//localhost:3000/info").then(console.log);
+      const instance = axios.create({});
 
-        // 跨域
-        axios.get("//localhost:3000/info2").then(console.log);
-        // axios.get("//localhost:3000/info").then(console.log);
-        // axios.get("//localhost:3000/info").then(console.log);
+      instance.interceptors.response.use(
+        ({ data }) => {
+          if (data.code === 0) {
+            return data;
+          } else {
+            console.log("出错了");
+            return {};
+          }
+        },
+        (err) => {
+          console.log("出错了2");
+          return Promise.reject(err);
+        }
+      );
 
-        window.addEventListener("unhandledrejection", (e) => {
-          console.log("捕获");
+      const sleep = async (time) => {
+        return new Promise((res) => {
+          setTimeout(() => {
+            res();
+          }, time);
         });
       };
+
+      window.onload = async function () {
+        //   正常
+        // instance.get("//localhost:3000/info").then(console.log);
+        // 跨域 手动拦截 catch 两次都触发
+        // instance
+        //   .get("//localhost:3000/info2")
+        //   .then(console.log)
+        //   .catch((e) => console.log("error"));
+        // 接口错误
+        // instance.get("//localhost:3000/info2").then(console.log);
+        // todo
+        // axios.get("//localhost:3000/info").then(console.log);
+      };
+
+      window.addEventListener("beforeunload", async (event) => {
+        // await sleep(1000);
+        // 可以看到图片都发出了请求 get only
+        // var a = new Image();
+        // a.src = "//localhost:3000/info-late2";
+        // 被取消了 但能打过去
+        axios.post("//localhost:3000/info-late").then(console.log);
+        // 不会被取消 but post only 还放入了others里
+        // navigator.sendBeacon("//localhost:3000/info-late", "");
+      });
     </script>
   </body>
 </html>
